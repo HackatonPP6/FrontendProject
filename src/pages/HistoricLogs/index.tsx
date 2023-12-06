@@ -34,17 +34,28 @@ export const HistoricLogs = () => {
               return;
           }
 
+          setShowLoading(true)
+
           const response = await fetch(apiUrl, {
             method: "GET",
           });
 
           const responseData = await response.json();
 
-          console.log(responseData);
           sessionStorage.setItem(
             "currentServersInfo",
             JSON.stringify(responseData)
           );
+
+          if (responseData) {
+            let list = responseData;
+            let lista = list.map((item: any) => ({
+              location: item.service,
+              status: item.status[0],
+            }));
+            setList(lista);
+            setShowLoading(false)
+          }
         }
       } catch (error) {}
     };
@@ -53,17 +64,6 @@ export const HistoricLogs = () => {
     }
     fetchData();
   }, []);
-
-  useEffect(() => {
-    if (sessionStorage.getItem("currentServersInfo")) {
-      let list = JSON.parse(sessionStorage.getItem("currentServersInfo") ?? "");
-      let lista = list.map((item: any) => ({
-        location: item.service,
-        status: item.status[0],
-      }));
-      setList(lista);
-    }
-  }, [sessionStorage.getItem("currentServersInfo")]);
 
   return (
     <>

@@ -249,6 +249,8 @@ function App() {
     sessionStorage.getItem("jiraList"),
   ]);
 
+  console.log(ociServerStatus)
+
   return (
     <>
       {showLoading && (
